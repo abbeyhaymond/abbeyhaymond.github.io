@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Abbey Haymond</title>
-    <link>/post/</link>
-    <description>Recent content in Posts on Abbey Haymond</description>
+    <title>R on Abbey Haymond</title>
+    <link>/categories/r/</link>
+    <description>Recent content in R on Abbey Haymond</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 26 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Text Cleaning</title>
       <link>/2021/03/26/text-cleaning/</link>

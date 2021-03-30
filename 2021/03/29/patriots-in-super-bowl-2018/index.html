@@ -110,7 +110,7 @@ library(kableExtra)</code></pre>
 ## )</code></pre>
 <pre class="r"><code>yardsvsplays &lt;- sbLdrives %&gt;% group_by(SuperBowl) %&gt;% summarise(TotalYards = sum(Net_yds),TotalPlays = sum(Plays)) %&gt;% select(SuperBowl, TotalYards, TotalPlays)
 outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;)</code></pre>
-<p>Tom Brady had the most passing yards in a Super Bowl in 2018, so why did they still lose? How did they compare on offense to other Super Bowl losers this century? I looked at all these teams’ yards from scrimmage and the number of plays. I looked at these measures to see how much each team was able to move the ball.</p>
+<p>Tom Brady had the most passing yards in a Super Bowl in 2018, so why was he not able to lead them to a victory? How did they compare on offense to other Super Bowl losers this century? I looked at all these teams’ yards from scrimmage and the number of plays to see how much each team was able to move the ball.</p>
 <pre class="r"><code>ggplot() + 
   geom_point(data=yardsvsplays, aes(x=TotalPlays, y=TotalYards)) +
   geom_smooth(data=yardsvsplays, aes(x=TotalPlays, y=TotalYards), method=&quot;lm&quot;) +
@@ -130,7 +130,7 @@ outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quo
     panel.grid.minor = element_blank()) </code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/2021/03/29/patriots-in-super-bowl-2018/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-The 2017 Patriots are an outlier. Their offense clearly moved the ball and had a lot of opportunities to make plays. How were they that effective and still managed to lose?</p>
+The 2017 Patriots are an outlier. Their offense clearly moved the ball and had a lot of opportunities to make plays. They were effective when they had the ball, but how did they compare in other areas to the Eagles?</p>
 <pre class="r"><code>sbstats &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/sbstats.csv&quot;)</code></pre>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -141,12 +141,13 @@ The 2017 Patriots are an outlier. Their offense clearly moved the ball and had a
 ##   SuperBowl = col_character()
 ## )</code></pre>
 <pre class="r"><code>outlierstats &lt;- sbstats %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;) %&gt;% rename(Eagles = Winner, Patriots = Loser) %&gt;% group_by(Eagles, Patriots)</code></pre>
-<p>Then, I compared their performance in the Super Bowl to the Eagle’s.</p>
+<p>I compared the two teams’ performances.</p>
 <pre class="r"><code>outlierstats %&gt;% 
   select(&quot;Type&quot;,&quot;Eagles&quot;,&quot;Patriots&quot;) %&gt;%
   kable(escape=F) %&gt;% 
   kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;condensed&quot;)) %&gt;%
-  row_spec(10, bold = T, color = &quot;white&quot;, background = &quot;#012169&quot;) %&gt;%
+  row_spec(10, bold = T, color = &quot;white&quot;, background = &quot;#012169&quot;) %&gt;% 
+  row_spec(11, bold = T, color = &quot;white&quot;, background = &quot;#CC122C&quot;) %&gt;%
   column_spec(1, bold=T)</code></pre>
 <table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
@@ -274,13 +275,13 @@ Third Down Conv.
 </td>
 </tr>
 <tr>
-<td style="text-align:left;font-weight: bold;">
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #CC122C !important;font-weight: bold;">
 Fourth Down Conv.
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #CC122C !important;">
 2-2
 </td>
-<td style="text-align:left;">
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #CC122C !important;">
 1-2
 </td>
 </tr>
@@ -297,7 +298,7 @@ Time of Possession
 </tr>
 </tbody>
 </table>
-<p>The stats for both teams are fairly similar. Sure, the Patriot’s fumble may have made a difference, but are there any other factors? The table shows how the Patriots did in comparison to the Eagles on 3rd and 4th downs. While both teams did well on offense, the Patriots were not as efficient when converting.</p>
+<p>The stats for both teams are fairly similar. Sure, the Patriot’s fumble may have made a difference, but are there any other factors at play? The table shows how the Patriots did in comparison to the Eagles on 3rd and 4th downs. While both teams did well on offense, the Patriots were not as efficient when converting.</p>
 <pre class="r"><code>ne2017 &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/Patriots17.csv&quot;)</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X4&#39; [4], &#39;X5&#39; [5], &#39;X9&#39; [9]</code></pre>
 <pre><code>## 
@@ -318,7 +319,7 @@ Time of Possession
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
 <pre class="r"><code>nedef &lt;- ne2017 %&gt;% pivot_longer(cols=c(&quot;DefRushY&quot;,&quot;DefPassY&quot;), names_to=&quot;Type&quot;, values_to=&quot;Yards&quot;)
 nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
-<p>Seeing that the Patriots competed decently on offense, did they do the same on defense? I compared their yards on defense in the Super Bowl to their entire season.</p>
+<p>Despite the Patriots not being as successful on 3rd and 4th downs, they still competed decently on offense. Did they do the same on defense? I compared their yards on defense in the Super Bowl to their entire season.</p>
 <pre class="r"><code>ggplot(nedefchart, aes(x=reorder(Week, Yards), weight=Yards, fill=Type)) + 
   geom_bar() + 
   coord_flip() +
@@ -327,7 +328,7 @@ nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
     y=&quot;Yards&quot;, 
     title=&quot;Patriot&#39;s Defensive Yards Allowed&quot;, 
     subtitle=&quot;New England lost the top three games.&quot;, 
-    caption=&quot;Source: pro-football-reference.com | By Abbey Haymond&quot;) +
+    caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +
   theme_minimal() + scale_fill_manual(values=c(&quot;#012169&quot;,&quot;#CC122C&quot;)) + 
   theme(
     plot.title = element_text(size = 12, face = &quot;bold&quot;),
@@ -335,7 +336,7 @@ nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
     plot.subtitle = element_text(size=10), 
     panel.grid.minor = element_blank()) </code></pre>
 <p><img src="/2021/03/29/patriots-in-super-bowl-2018/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-So, here we go. The Patriots allowed more yards on defense than any other game that season. They allowed 164 rushing yards and 374 passing yards, struggling to stop the Eagles on the ground or through the air. If you look into it, then can find out that the Patriots lost their top three games in terms of defensive yards allowed. While they may have performed like a winning team on offense, the Eagles were able to handle the Patriot’s defense, which was enough to keep them from another Super Bowl ring.</p>
+So, here we go. The Patriots allowed more yards on defense than any other game that season. They allowed 164 rushing yards and 374 passing yards, struggling to stop the Eagles on the ground or through the air. If you look into it, then you will find out that the Patriots lost their top three games in terms of defensive yards allowed. While they may have performed like a winning team on offense, the Eagles were able to handle the Patriot’s defense, which was enough to keep them from another Super Bowl ring.</p>
 
     </div>
   </article>

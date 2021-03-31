@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">Patriots in Super Bowl 2018</h1>
@@ -110,7 +110,8 @@ library(kableExtra)</code></pre>
 ## )</code></pre>
 <pre class="r"><code>yardsvsplays &lt;- sbLdrives %&gt;% group_by(SuperBowl) %&gt;% summarise(TotalYards = sum(Net_yds),TotalPlays = sum(Plays)) %&gt;% select(SuperBowl, TotalYards, TotalPlays)
 outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;)</code></pre>
-<p>Tom Brady had the most passing yards in a Super Bowl in 2018, so why was he not able to lead them to a victory? How did they compare on offense to other Super Bowl losers this century? I looked at all these teams’ yards from scrimmage and the number of plays to see how much each team was able to move the ball.</p>
+<p>The Patriots have been a powerhouse in the NFL for the past two decades. They have won six Super Bowl titles, and they looked like a team that was ready to claim another one during their 2017 season. Tom Brady had the most passing yards in a Super Bowl in 2018, so why was he not able to lead his team to a victory?</p>
+<p>I started by looking into how the Patriots compared on offense to other Super Bowl losers from this century. I looked at all the teams’ yards from scrimmage and the number of plays to see how much each team was able to move the ball during their Super Bowl appearance.</p>
 <pre class="r"><code>ggplot() + 
   geom_point(data=yardsvsplays, aes(x=TotalPlays, y=TotalYards)) +
   geom_smooth(data=yardsvsplays, aes(x=TotalPlays, y=TotalYards), method=&quot;lm&quot;) +
@@ -130,7 +131,7 @@ outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quo
     panel.grid.minor = element_blank()) </code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/2021/03/29/patriots-in-super-bowl-2018/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-The 2017 Patriots are an outlier. Their offense clearly moved the ball and had a lot of opportunities to make plays. They were effective when they had the ball, but how did they compare in other areas to the Eagles?</p>
+The chart shows that the 2017 Patriots are an outlier. Their offense moved the ball more than the average loser in a Super Bowl, and they had a lot of opportunities to do something with the ball, considering the number of plays they had possession. We can see that the Patriots moved the ball, but were they effective when doing so? How did they compare in other areas to the Eagles?</p>
 <pre class="r"><code>sbstats &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/sbstats.csv&quot;)</code></pre>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -141,7 +142,7 @@ The 2017 Patriots are an outlier. Their offense clearly moved the ball and had a
 ##   SuperBowl = col_character()
 ## )</code></pre>
 <pre class="r"><code>outlierstats &lt;- sbstats %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;) %&gt;% rename(Eagles = Winner, Patriots = Loser) %&gt;% group_by(Eagles, Patriots)</code></pre>
-<p>I compared the two teams’ performances.</p>
+<p>I compared the two teams’ performances in Super Bowl 52.</p>
 <pre class="r"><code>outlierstats %&gt;% 
   select(&quot;Type&quot;,&quot;Eagles&quot;,&quot;Patriots&quot;) %&gt;%
   kable(escape=F) %&gt;% 
@@ -298,7 +299,7 @@ Time of Possession
 </tr>
 </tbody>
 </table>
-<p>The stats for both teams are fairly similar. Sure, the Patriot’s fumble may have made a difference, but are there any other factors at play? The table shows how the Patriots did in comparison to the Eagles on 3rd and 4th downs. While both teams did well on offense, the Patriots were not as efficient when converting.</p>
+<p>The stats for both teams are fairly similar. Sure, the Patriot’s fumble may have made a difference, but are there any other factors at play? The table shows how the Patriots did in comparison to the Eagles on 3rd and 4th downs. While both teams did well on offense, the Patriots were not as efficient when converting, taking away the offense’s opportunity to drive it into the endzone.</p>
 <pre class="r"><code>ne2017 &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/Patriots17.csv&quot;)</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X4&#39; [4], &#39;X5&#39; [5], &#39;X9&#39; [9]</code></pre>
 <pre><code>## 
@@ -319,7 +320,7 @@ Time of Possession
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
 <pre class="r"><code>nedef &lt;- ne2017 %&gt;% pivot_longer(cols=c(&quot;DefRushY&quot;,&quot;DefPassY&quot;), names_to=&quot;Type&quot;, values_to=&quot;Yards&quot;)
 nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
-<p>Despite the Patriots not being as successful on 3rd and 4th downs, they still competed decently on offense. Did they do the same on defense? I compared their yards on defense in the Super Bowl to their entire season.</p>
+<p>Despite the Patriots not being as successful on 3rd and 4th downs, they still competed decently on offense. Maybe there was a bigger problem than Tom Brady and his offense. I looked at how their yards on defense in the Super Bowl compared to their entire season.</p>
 <pre class="r"><code>ggplot(nedefchart, aes(x=reorder(Week, Yards), weight=Yards, fill=Type)) + 
   geom_bar() + 
   coord_flip() +
@@ -336,7 +337,8 @@ nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
     plot.subtitle = element_text(size=10), 
     panel.grid.minor = element_blank()) </code></pre>
 <p><img src="/2021/03/29/patriots-in-super-bowl-2018/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-So, here we go. The Patriots allowed more yards on defense than any other game that season. They allowed 164 rushing yards and 374 passing yards, struggling to stop the Eagles on the ground or through the air. If you look into it, then you will find out that the Patriots lost their top three games in terms of defensive yards allowed. While they may have performed like a winning team on offense, the Eagles were able to handle the Patriot’s defense, which was enough to keep them from another Super Bowl ring.</p>
+So, here we go. The Patriots allowed more yards on defense than any other game that season. They allowed 164 rushing yards and 374 passing yards, struggling to stop the Eagles on the ground or through the air. If you look into it, you will find that the Patriot’s worst three games in terms of defensive yards allowed were all losses.</p>
+<p>While the Patriots may have performed like a winning team on offense, the Eagles did a better job handling their defense. Ultimately, this was enough to keep them from another Super Bowl ring. The game was a matchup on offense, but the Patriots couldn’t keep the Eagle’s offense off the field when it needed to.</p>
 
     </div>
   </article>

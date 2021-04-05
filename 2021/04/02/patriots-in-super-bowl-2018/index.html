@@ -96,7 +96,6 @@ library(kableExtra)</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     group_rows</code></pre>
-<pre class="r"><code>library(gt)</code></pre>
 <p>To start off, I am working with Super Bowl game data from every team that lost in the past two decades. I focused on the total amount of yards and plays that each team had in the game. The Patriots got their own dataframe, so I can point them out in the chart.</p>
 <pre class="r"><code>sbLdrives &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/sbLdrives.csv&quot;)</code></pre>
 <pre><code>## 
@@ -327,9 +326,27 @@ Time of Possession
 ## )
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
 <pre class="r"><code>nedef &lt;- ne2017 %&gt;% pivot_longer(cols=c(&quot;DefRushY&quot;,&quot;DefPassY&quot;), names_to=&quot;Type&quot;, values_to=&quot;Yards&quot;)
-nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
+nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)
+nedefchartclean &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/nedefchartclean.csv&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   Week = col_character(),
+##   Day = col_character(),
+##   Date = col_character(),
+##   X4 = col_character(),
+##   X5 = col_character(),
+##   `W/L` = col_character(),
+##   OT = col_logical(),
+##   Rec = col_character(),
+##   X9 = col_character(),
+##   Opp = col_character(),
+##   Type = col_character()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
 <p>I looked at how their yards on defense in the Super Bowl compared to their entire season.</p>
-<pre class="r"><code>ggplot(nedefchart, aes(x=reorder(Week, Yards), weight=Yards, fill=Type)) + 
+<pre class="r"><code>ggplot(nedefchartclean, aes(x=reorder(Week, Yards), weight=Yards, fill=Type)) + 
   geom_bar() + 
   coord_flip() +
   labs(

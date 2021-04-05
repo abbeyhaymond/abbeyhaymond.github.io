@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.81.0" />
+
+
+<title>Even when they lose, the Patriots perform like Super Bowl Champions - Abbey Haymond</title>
+<meta property="og:title" content="Even when they lose, the Patriots perform like Super Bowl Champions - Abbey Haymond">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://linkedin.com/in/abbeyhaymond/">LinkedIn</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Even when they lose, the Patriots perform like Super Bowl Champions</h1>
+
+    
+    <span class="article-date">2021-04-02</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/04/02/patriots-in-super-bowl-2018/index_files/header-attrs/header-attrs.js"></script>
+<script src="/2021/04/02/patriots-in-super-bowl-2018/index_files/kePrint/kePrint.js"></script>
+<link href="/2021/04/02/patriots-in-super-bowl-2018/index_files/lightable/lightable.css" rel="stylesheet" />
+
+
+<p>The Patriots have been a powerhouse in the NFL for the past two decades. They have won six Super Bowl titles, and they looked like a team that was ready to claim another one during their 2017 season. Tom Brady had the most passing yards in a Super Bowl in 2018, so why was he not able to lead his team to a victory?</p>
+<p>I took a look at their numbers on offense during the Super Bowl.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.5     ✓ dplyr   1.0.3
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggrepel)
+library(kableExtra)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;kableExtra&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     group_rows</code></pre>
+<pre class="r"><code>library(gt)</code></pre>
+<p>To start off, I am working with Super Bowl game data from every team that lost in the past two decades. I focused on the total amount of yards and plays that each team had in the game. The Patriots got their own dataframe, so I can point them out in the chart.</p>
+<pre class="r"><code>sbLdrives &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/sbLdrives.csv&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   `#` = col_double(),
+##   Quarter = col_double(),
+##   Time = col_time(format = &quot;&quot;),
+##   LOS = col_character(),
+##   Plays = col_double(),
+##   Length = col_time(format = &quot;&quot;),
+##   Net_yds = col_double(),
+##   Result = col_character(),
+##   SuperBowl = col_character()
+## )</code></pre>
+<pre class="r"><code>yardsvsplays &lt;- sbLdrives %&gt;% group_by(SuperBowl) %&gt;% summarise(TotalYards = sum(Net_yds),TotalPlays = sum(Plays)) %&gt;% select(SuperBowl, TotalYards, TotalPlays)
+outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;)</code></pre>
+<p>I looked into how the Patriots compared on offense to other Super Bowl losers from this century. I paid attention to all the teams’ yards from scrimmage and the number of plays to see how much each team moved the ball during their Super Bowl appearance.</p>
+<p>I plotted each point based on total yards and plays. I put in a linear regression to make it easier to visualize the relationship that the two variables have and where each team falls on that model.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=yardsvsplays, aes(x=TotalPlays, y=TotalYards)) +
+  geom_smooth(data=yardsvsplays, aes(x=TotalPlays, y=TotalYards), method=&quot;lm&quot;, se=FALSE) +
+  geom_point(data=outlieryards, aes(x=TotalPlays, y=TotalYards), color=&quot;red&quot;) +
+  geom_text_repel(data=outlieryards, aes(x=TotalPlays, y=TotalYards, label=SuperBowl)) + 
+  labs(
+    x=&quot;Plays&quot;, 
+    y=&quot;Yards&quot;, 
+    title=&quot;The 2017 Patriot&#39;s offense is an outlier in the Super Bowl&quot;, 
+    subtitle=&quot;New England moved the ball more than any loser in a Super Bowl from this century.&quot;, 
+    caption=&quot;Source: pro-football-reference.com | By Abbey Haymond&quot;) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10),
+    panel.grid.minor = element_blank()) </code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/2021/04/02/patriots-in-super-bowl-2018/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+What this chart shows is that the 2017 Patriots are the furthest team away from that model. This tells me that they are an outlier compared to every other team. Their offense moved the ball more than the average loser in a Super Bowl.</p>
+<p>They had many opportunities to do something with the ball, considering the number of plays they had possession. We can tell that the Patriots moved the ball, but were they effective when doing so? How did they compare in other areas to the Eagles?</p>
+<p>The next data set that I am working with is Super Bowl game data. I focused on the stats from Super Bowl 52 to get a better idea of how the Patriots compared to the Eagles.</p>
+<pre class="r"><code>sbstats &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/sbstats.csv&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   Type = col_character(),
+##   Winner = col_character(),
+##   Loser = col_character(),
+##   SuperBowl = col_character()
+## )</code></pre>
+<pre class="r"><code>outlierstats &lt;- sbstats %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;) %&gt;% rename(Eagles = Winner, Patriots = Loser) %&gt;% group_by(Eagles, Patriots)</code></pre>
+<p>I compared the two teams’ performances in Super Bowl 52 and highlighted the areas that I found worthy of discussion.</p>
+<pre class="r"><code>outlierstats %&gt;% 
+  select(&quot;Type&quot;,&quot;Eagles&quot;,&quot;Patriots&quot;) %&gt;%
+  kable(escape=F) %&gt;% 
+  kable_styling(bootstrap_options = c(&quot;striped&quot;, &quot;condensed&quot;)) %&gt;%
+  row_spec(10, bold = T, color = &quot;white&quot;, background = &quot;#012169&quot;) %&gt;% 
+  row_spec(11, bold = T, color = &quot;white&quot;, background = &quot;#CC122C&quot;) %&gt;%
+  column_spec(1, bold=T)</code></pre>
+<table class="table table-striped table-condensed" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Type
+</th>
+<th style="text-align:left;">
+Eagles
+</th>
+<th style="text-align:left;">
+Patriots
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+First Downs
+</td>
+<td style="text-align:left;">
+25
+</td>
+<td style="text-align:left;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Rush-Yds-TDs
+</td>
+<td style="text-align:left;">
+27-164-1
+</td>
+<td style="text-align:left;">
+22-113-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Cmp-Att-Yd-TD-INT
+</td>
+<td style="text-align:left;">
+29-44-374-4-1
+</td>
+<td style="text-align:left;">
+28-49-505-3-0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Sacked-Yards
+</td>
+<td style="text-align:left;">
+0-0
+</td>
+<td style="text-align:left;">
+1-5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Net Pass Yards
+</td>
+<td style="text-align:left;">
+374
+</td>
+<td style="text-align:left;">
+500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Total Yards
+</td>
+<td style="text-align:left;">
+538
+</td>
+<td style="text-align:left;">
+613
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Fumbles-Lost
+</td>
+<td style="text-align:left;">
+0-0
+</td>
+<td style="text-align:left;">
+1-1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Turnovers
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Penalties-Yards
+</td>
+<td style="text-align:left;">
+6-35
+</td>
+<td style="text-align:left;">
+1-5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #012169 !important;font-weight: bold;">
+Third Down Conv.
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #012169 !important;">
+10-16
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #012169 !important;">
+5-10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #CC122C !important;font-weight: bold;">
+Fourth Down Conv.
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #CC122C !important;">
+2-2
+</td>
+<td style="text-align:left;font-weight: bold;color: white !important;background-color: #CC122C !important;">
+1-2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Time of Possession
+</td>
+<td style="text-align:left;">
+34:04
+</td>
+<td style="text-align:left;">
+25:56
+</td>
+</tr>
+</tbody>
+</table>
+<p>The stats for both teams are fairly similar. Sure, the Patriot’s fumble may have made a difference, but are there any other factors at play?</p>
+<p>While both teams did well on offense, the Patriots were not as efficient when converting on 3rd and 4th downs. This gives their offense fewer opportunities to keep the ball, but they still got a few points when they did.</p>
+<p>The Patriots may not have been as successful when converting, but they still competed decently on offense. I am starting to think that I should focus on their defense. The last data set that I am working with is game data from their entire season, excluding game 9 because that was a bye week.</p>
+<pre class="r"><code>ne2017 &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/Patriots17.csv&quot;)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X4&#39; [4], &#39;X5&#39; [5], &#39;X9&#39; [9]</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   Week = col_character(),
+##   Day = col_character(),
+##   Date = col_character(),
+##   X4 = col_character(),
+##   X5 = col_character(),
+##   `W/L` = col_character(),
+##   OT = col_logical(),
+##   Rec = col_character(),
+##   X9 = col_character(),
+##   Opp = col_character()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<pre class="r"><code>nedef &lt;- ne2017 %&gt;% pivot_longer(cols=c(&quot;DefRushY&quot;,&quot;DefPassY&quot;), names_to=&quot;Type&quot;, values_to=&quot;Yards&quot;)
+nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
+<p>I looked at how their yards on defense in the Super Bowl compared to their entire season.</p>
+<pre class="r"><code>ggplot(nedefchart, aes(x=reorder(Week, Yards), weight=Yards, fill=Type)) + 
+  geom_bar() + 
+  coord_flip() +
+  labs(
+    x=&quot;Game&quot;, 
+    y=&quot;Yards&quot;, 
+    title=&quot;The Patriot&#39;s defense seems to be the problem&quot;, 
+    subtitle=&quot;New England lost their top three games in terms of defensive yards allowed.&quot;, 
+    caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +
+  theme_minimal() + scale_fill_manual(values=c(&quot;#012169&quot;,&quot;#CC122C&quot;)) + 
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10), 
+    panel.grid.minor = element_blank()) </code></pre>
+<p><img src="/2021/04/02/patriots-in-super-bowl-2018/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+So, here we go. The Patriots allowed more yards on defense than any other game that season. They allowed 164 rushing yards and 374 passing yards, struggling to stop the Eagles on the ground or through the air. If you look into it, you will find that the Patriot’s worst three games in terms of defensive yards allowed were all losses.</p>
+<p>While the Patriots may have performed like a winning team on offense, the Eagles took advantage of their defense. Ultimately, this was enough to keep them from another Super Bowl ring. The game was a matchup on offense, but the Patriots couldn’t keep the Eagle’s offense off the field when it needed to.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

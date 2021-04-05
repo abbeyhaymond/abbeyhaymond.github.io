@@ -113,7 +113,7 @@ library(kableExtra)</code></pre>
 ## )</code></pre>
 <pre class="r"><code>yardsvsplays &lt;- sbLdrives %&gt;% group_by(SuperBowl) %&gt;% summarise(TotalYards = sum(Net_yds),TotalPlays = sum(Plays)) %&gt;% select(SuperBowl, TotalYards, TotalPlays)
 outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;)</code></pre>
-<p>I am talking a look at how the Patriots compared on offense to other Super Bowl losers from this century. I paid attention to all the teams’ yards from scrimmage and number of plays to see how much each one moved the ball during their Super Bowl appearance.</p>
+<p>I am taking a look at how the Patriots compared on offense to other Super Bowl losers from this century. I paid attention to all the teams’ yards from scrimmage and number of plays to see how much each one moved the ball during their Super Bowl appearance.</p>
 <p>I plotted each point based on total yards and plays. Then, I added the linear regression to visualize the relationship between those two variables and where each team falls on that model.</p>
 <pre class="r"><code>ggplot() + 
   geom_point(data=yardsvsplays, aes(x=TotalPlays, y=TotalYards)) +

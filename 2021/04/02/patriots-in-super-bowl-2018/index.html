@@ -122,7 +122,7 @@ outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quo
   geom_text_repel(data=outlieryards, aes(x=TotalPlays, y=TotalYards, label=SuperBowl)) + 
   labs(
     x=&quot;Plays&quot;, 
-    y=&quot;Yards&quot;, 
+    y=&quot;Total Yards&quot;, 
     title=&quot;The 2017 Patriot&#39;s offense is an outlier in the Super Bowl&quot;, 
     subtitle=&quot;New England moved the ball more than any loser in a Super Bowl from this century.&quot;, 
     caption=&quot;Source: pro-football-reference.com | By Abbey Haymond&quot;) +
@@ -352,7 +352,7 @@ nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
   coord_flip() +
   labs(
     x=&quot;Game&quot;, 
-    y=&quot;Yards&quot;, 
+    y=&quot;Total Yards&quot;, 
     title=&quot;The Patriot&#39;s defense seems to be the problem&quot;, 
     subtitle=&quot;New England lost their top three games in terms of defensive yards allowed.&quot;, 
     caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +

@@ -87,7 +87,7 @@
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(ggrepel)
 library(waffle)</code></pre>
-<p>In May of 2020, Arizona Cardinals receiver, DeAndre Hopkins, joined the Jalen &amp; Jacoby Show. He claimed that he is the best wide receiver in the NFL and compared himself to Julio Jones. Is he really better than Jet Jones?</p>
+<p>In May of 2020, Arizona Cardinals receiver, DeAndre Hopkins, joined the Jalen &amp; Jacoby Show. He claimed that he is the best wide receiver in the NFL and compared himself to Julio Jones. Is he really better than “Jet” Jones?</p>
 <p>I took a look at their numbers throughout their careers.</p>
 <pre class="r"><code>NFLreceiving &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/nflreceiving.csv&quot;) %&gt;% mutate(CtchPct = as.numeric(gsub(&quot;%&quot;, &quot;&quot;, CtchPct)))</code></pre>
 <pre><code>## 
@@ -126,8 +126,8 @@ DHrecAvg &lt;- DHreceiving %&gt;% summarise(
   labs(
     x=&quot;Average Receptions&quot;, 
     y=&quot;Average Yards&quot;, 
-    title=&quot;Julio Jones is an outlier in the NFL&quot;, 
-    subtitle=&quot;&quot;, 
+    title=&quot;Jones and Hopkins are both elite players in the NFL&quot;, 
+    subtitle=&quot;Julio Jones moved and received the ball slightly more than DeAndre Hopkins. &quot;, 
     caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +
   theme_minimal() + 
   theme(
@@ -137,7 +137,7 @@ DHrecAvg &lt;- DHreceiving %&gt;% summarise(
     panel.grid.minor = element_blank()) </code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/2021/04/14/is-deandre-hopkins-better-than-julio-jones/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-This chart shows that both Jones and Hopkins are close to the top right portion of the model, which tells me that they are higher in comparison to other top players in the league. They both have a higher number of average receptions and yards.</p>
+This chart shows that both Jones and Hopkins are close to the top right portion of the model, which tells me that they are higher in comparison to other top players in the league.</p>
 <p>Julio Jones is slightly higher than DeAndre Hopkins, but they are comparable when it comes to how much they caught and moved the ball. We can tell that they are both exceptional wide receivers.</p>
 <p>Another way to identify a good receiver is by their number of targets. The targeted receiver tends to be the best receiver on the field for that play; the better a player does his job, the more likely he is going to be the target.</p>
 <p>I am looking at the same data and select the seasons that both Jones and Hopkins played consistently. I focused on the number of targets that they had those season to the rest of the league.</p>
@@ -154,8 +154,8 @@ DHreceivingclean &lt;- DHreceiving %&gt;% select(Season, Tgt) %&gt;% subset(Seas
   labs(
     x=&quot;Season&quot;, 
     y=&quot;Average Target&quot;, 
-    title=&quot;Julio Jones is an outlier in the NFL&quot;, 
-    subtitle=&quot;&quot;, 
+    title=&quot;Both players are good at what they do&quot;, 
+    subtitle=&quot;Jones and Hopkins exceeded in comparison to the league as targets.&quot;, 
     caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +
   theme_minimal() + 
   theme(
@@ -166,8 +166,7 @@ DHreceivingclean &lt;- DHreceiving %&gt;% select(Season, Tgt) %&gt;% subset(Seas
 <pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
 ## replace the existing scale.</code></pre>
 <p><img src="/2021/04/14/is-deandre-hopkins-better-than-julio-jones/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
-Again, the data for both players are fairly similar. Throughout their careers, their average number of targets hike above and below the other.</p>
-<p>They exceeded in comparison to the league in the average number of targets during this period to suggest that Jones and Hopkins are both good at what they do.</p>
+Again, the data for both players are fairly similar. Throughout their careers, their average number of targets hike above and below the other. They exceeded in comparison to the league in the average number of targets during this period to suggest that Jones and Hopkins are both good at what they do.</p>
 <p>Both receivers’ trends are comparable, so I decided to look at one last area. Jones and Hopkins can move the ball and make their routes, but what is the result of those plays?</p>
 <p>This chart shows that both Jones and Hopkins are close to the top right portion of the model, which tells me that they are higher when compared to other top players in the league. They both have a higher number of average receptions and yards.</p>
 <p>I am working with the same data, but I focused on their average number of touchdowns and first downs throughout both players’ careers.</p>
@@ -192,7 +191,7 @@ nfl &lt;- c(&quot;TD&quot;=6.23, &quot;1D&quot;=48.29)</code></pre>
         xlab=&quot;1 square = 1 down&quot;, 
         colors = c(&quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) +
   theme(
-    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    plot.title = element_text(size = 12),
     axis.title = element_text(size = 8), 
     plot.subtitle = element_text(size=10),
     panel.grid.minor = element_blank()),
@@ -202,7 +201,7 @@ nfl &lt;- c(&quot;TD&quot;=6.23, &quot;1D&quot;=48.29)</code></pre>
         xlab=&quot;1 square = 1 down&quot;, 
         colors = c(&quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) +
   theme(
-    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    plot.title = element_text(size = 12),
     axis.title = element_text(size = 8), 
     plot.subtitle = element_text(size=10),
     panel.grid.minor = element_blank()),
@@ -212,7 +211,7 @@ nfl &lt;- c(&quot;TD&quot;=6.23, &quot;1D&quot;=48.29)</code></pre>
         xlab=&quot;1 square = 1 down&quot;, 
         colors = c(&quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) +
   theme(
-    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    plot.title = element_text(size = 12),
     axis.title = element_text(size = 8), 
     plot.subtitle = element_text(size=10),
     panel.grid.minor = element_blank()) + 

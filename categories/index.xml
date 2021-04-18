@@ -6,7 +6,16 @@
     <description>Recent content in Categories on Abbey Haymond</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 02 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Apr 2021 21:13:14 -0500</lastBuildDate><atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Books</title>
+      <link>/categories/books/</link>
+      <pubDate>Wed, 14 Apr 2021 21:13:14 -0500</pubDate>
+      
+      <guid>/categories/books/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>R</title>
       <link>/categories/r/</link>

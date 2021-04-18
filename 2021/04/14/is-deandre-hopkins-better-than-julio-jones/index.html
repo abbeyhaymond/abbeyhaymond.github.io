@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.81.0" />
+
+
+<title>Is DeAndre Hopkins better than Julio Jones? - Abbey Haymond</title>
+<meta property="og:title" content="Is DeAndre Hopkins better than Julio Jones? - Abbey Haymond">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://linkedin.com/in/abbeyhaymond/">LinkedIn</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">6 min read</span>
+    
+
+    <h1 class="article-title">Is DeAndre Hopkins better than Julio Jones?</h1>
+
+    
+    <span class="article-date">2021-04-14</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/04/14/is-deandre-hopkins-better-than-julio-jones/index_files/header-attrs/header-attrs.js"></script>
+
+
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.1.0     ✓ dplyr   1.0.5
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggrepel)
+library(waffle)</code></pre>
+<p>In May of 2020, Arizona Cardinals receiver, DeAndre Hopkins, joined the Jalen &amp; Jacoby Show. He claimed that he is the best wide receiver in the NFL and compared himself to Julio Jones. Is he really better than Jet Jones?</p>
+<p>I took a look at their numbers throughout their careers.</p>
+<pre class="r"><code>NFLreceiving &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/nflreceiving.csv&quot;) %&gt;% mutate(CtchPct = as.numeric(gsub(&quot;%&quot;, &quot;&quot;, CtchPct)))</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   Player = col_character(),
+##   Tm = col_character(),
+##   Pos = col_character(),
+##   CtchPct = col_character()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<pre class="r"><code>JJreceiving &lt;- NFLreceiving %&gt;% filter(Player == &quot;Julio Jones&quot;)
+DHreceiving &lt;- NFLreceiving %&gt;% filter(Player == &quot;DeAndre Hopkins&quot;)</code></pre>
+<p>To start, I am working with NFL offense data from the top 50 players every season, going back to Julio Jones’ rookie year. I focused on the average yards and receptions that the two receivers have throughout their careers.</p>
+<pre class="r"><code>RecAvg &lt;- NFLreceiving %&gt;%
+  group_by(Player) %&gt;%
+  summarise(
+    AvgYds = mean(Yds),
+    AvgRec = mean(Rec))
+JJrecAvg &lt;- JJreceiving %&gt;% summarise(
+  AvgYds = mean(Yds),
+  AvgRec = mean(Rec))
+DHrecAvg &lt;- DHreceiving %&gt;% summarise(
+  AvgYds = mean(Yds),
+  AvgRec = mean(Rec))</code></pre>
+<p>I am taking a look at how Hopkins and Jones compared on offense to other top players in the league. I paid attention to all the players’ number of yards and receptions to see how much they moved the ball, on average, each season.</p>
+<p>I plotted each point based on average yards and receptions. Then, I added the linear regression to visualize the relationship between those two variables and where each player falls on that model. I also labeled Hopkins and Jones, so it is easier to see how they compare to the rest of the league.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=RecAvg, aes(x=AvgRec, y=AvgYds)) +
+  geom_smooth(data=RecAvg, aes(x=AvgRec, y=AvgYds), method=&quot;lm&quot;, se=FALSE) +
+  geom_point(data=JJrecAvg, aes(x=AvgRec, y=AvgYds), color=&quot;#A71930&quot;) +
+  geom_point(data=DHrecAvg, aes(x=AvgRec, y=AvgYds), color=&quot;grey&quot;) +
+  geom_text_repel(data=JJrecAvg, aes(x=AvgRec, y=AvgYds, label=&quot;Julio Jones&quot;)) +
+  geom_text_repel(data=DHrecAvg, aes(x=AvgRec, y=AvgYds, label=&quot;DeAndre Hopkins&quot;)) +
+  labs(
+    x=&quot;Average Receptions&quot;, 
+    y=&quot;Average Yards&quot;, 
+    title=&quot;Julio Jones is an outlier in the NFL&quot;, 
+    subtitle=&quot;&quot;, 
+    caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10),
+    panel.grid.minor = element_blank()) </code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/2021/04/14/is-deandre-hopkins-better-than-julio-jones/index_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+This chart shows that both Jones and Hopkins are close to the top right portion of the model, which tells me that they are higher in comparison to other top players in the league. They both have a higher number of average receptions and yards.</p>
+<p>Julio Jones is slightly higher than DeAndre Hopkins, but they are comparable when it comes to how much they caught and moved the ball. We can tell that they are both exceptional wide receivers.</p>
+<p>Another way to identify a good receiver is by their number of targets. The targeted receiver tends to be the best receiver on the field for that play; the better a player does his job, the more likely he is going to be the target.</p>
+<p>I am looking at the same data and select the seasons that both Jones and Hopkins played consistently. I focused on the number of targets that they had those season to the rest of the league.</p>
+<pre class="r"><code>TgtAvg &lt;- NFLreceiving %&gt;%
+  group_by(Season) %&gt;% summarise(
+    AvgTgt = mean(Tgt))%&gt;%
+  select(Season, AvgTgt) %&gt;% subset(Season&gt;2013) %&gt;% subset(Season&lt;2020)
+JJreceivingclean &lt;- JJreceiving %&gt;% select(Season, Tgt) %&gt;% subset(Season&gt;2013)
+DHreceivingclean &lt;- DHreceiving %&gt;% select(Season, Tgt) %&gt;% subset(Season&lt;2020)</code></pre>
+<p>I looked at Jones’ and Hopkin’s number of targets on average each season and highlighted what each line represents.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=TgtAvg, aes(x=Season, y=AvgTgt, group=&quot;Season&quot;), color=&quot;grey&quot;) + 
+  geom_line(data=JJreceivingclean, aes(x=Season, y=Tgt), color=&quot;#A71930&quot;) + scale_x_continuous() + geom_line(data=DHreceivingclean, aes(x=Season, y=Tgt), color=&quot;black&quot;) + scale_x_continuous() + theme_minimal() + 
+  labs(
+    x=&quot;Season&quot;, 
+    y=&quot;Average Target&quot;, 
+    title=&quot;Julio Jones is an outlier in the NFL&quot;, 
+    subtitle=&quot;&quot;, 
+    caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10),
+    panel.grid.minor = element_blank()) </code></pre>
+<pre><code>## Scale for &#39;x&#39; is already present. Adding another scale for &#39;x&#39;, which will
+## replace the existing scale.</code></pre>
+<p><img src="/2021/04/14/is-deandre-hopkins-better-than-julio-jones/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+Again, the data for both players are fairly similar. Throughout their careers, their average number of targets hike above and below the other.</p>
+<p>They both remained the league average number of targets during this period to suggest that Jones and Hopkins are both good at what they do.</p>
+<p>Both receivers’ trends are comparable, so I decided to look at one last area. Jones and Hopkins can move the ball and make their routes, but what is the result of those plays?</p>
+<p>This chart shows that both Jones and Hopkins are close to the top right portion of the model, which tells me that they are higher when compared to other top players in the league. They both have a higher number of average receptions and yards.</p>
+<p>I am working with the same data, but I focused on their average number of touchdowns and first downs throughout both players’ careers.</p>
+<pre class="r"><code>JJdownAvg &lt;- JJreceiving %&gt;% summarise(
+    AvgTD = mean(TD),
+    Avg1D = mean(`1D`))
+DHdownAvg &lt;- DHreceiving %&gt;% summarise(
+    AvgTD = mean(TD),
+    Avg1D = mean(`1D`))
+NFLdownAvg &lt;- NFLreceiving %&gt;% summarise(
+    AvgTD = mean(TD),
+    Avg1D = mean(`1D`))</code></pre>
+<p>I found that Julio Jones had an average of 6.71 touchdowns and 73.29 first downs each season, while Deandre Hopkins had an average of 8.29 touchdowns and 70.57 first downs. To compare the two to the best in the league, I also found that the top 50 players had an average of 6.23 touchdowns and 48.29 first downs each season.</p>
+<pre class="r"><code>jj &lt;- c(&quot;TD&quot;=6.71, &quot;1D&quot;=73.29)
+dh &lt;- c(&quot;TD&quot;=8.29, &quot;1D&quot;=70.57, 1.14)
+nfl &lt;- c(&quot;TD&quot;=6.23, &quot;1D&quot;=48.29)</code></pre>
+<p>I charted these stats to compare them to the average of the rest of the league. I paid attention to all the players’ number of touchdowns and first downs to see how effective they are with the ball, on average, each season.</p>
+<pre class="r"><code>iron(
+ waffle(jj, 
+        rows = 5, 
+        title=&quot;Julio Jones&quot;,
+        xlab=&quot;1 square = 1 down&quot;, 
+        colors = c(&quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) +
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10),
+    panel.grid.minor = element_blank()),
+ waffle(dh, 
+        rows = 5, 
+        title=&quot;DeAndre Hopkins&quot;,
+        xlab=&quot;1 square = 1 down&quot;, 
+        colors = c(&quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) +
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10),
+    panel.grid.minor = element_blank()),
+ waffle(nfl, 
+        rows = 5, 
+        title=&quot;NFL&quot;,
+        xlab=&quot;1 square = 1 down&quot;, 
+        colors = c(&quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) +
+  theme(
+    plot.title = element_text(size = 12, face = &quot;bold&quot;),
+    axis.title = element_text(size = 8), 
+    plot.subtitle = element_text(size=10),
+    panel.grid.minor = element_blank()) + 
+  labs(subtitle = &quot;&quot;, caption = &quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;))</code></pre>
+<p><img src="/2021/04/14/is-deandre-hopkins-better-than-julio-jones/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+And again, to no one’s surprise, we can see that the two receivers have similar results when they receive the ball. (figure out NFL)</p>
+<p>Julio Jones averages slightly higher with his average number of first downs each season. On the other hand, DeAndre Hopkins average a bit more with his average number of touchdowns.</p>
+<p>Just from looking at this data, it is apparent that both Jones and Hopkins are elite wide receivers in the NFL. After comparing the players’ stats, they had similar stats. The data showed that they excelled in all areas, while one player sometimes did slightly better than the other.</p>
+<p>However, this still gives me an answer to my question. While DeAndre Hopkins is comparable to Julio Jones, he is not better than him.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

@@ -81,11 +81,11 @@
 <p>The Patriots have been a powerhouse in the NFL for the past two decades. They have won six Super Bowl titles, and they looked like a team that was ready to claim another one during their 2017 season. Tom Brady had the most passing yards in a Super Bowl in 2018, so why was that not enough to lead his team to a victory?</p>
 <p>I took a look at their numbers on offense during the Super Bowl.</p>
 <pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
-## ✓ tibble  3.0.5     ✓ dplyr   1.0.3
-## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
-## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+## ✓ tibble  3.1.0     ✓ dplyr   1.0.5
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
@@ -111,8 +111,13 @@ library(kableExtra)</code></pre>
 ##   Result = col_character(),
 ##   SuperBowl = col_character()
 ## )</code></pre>
-<pre class="r"><code>yardsvsplays &lt;- sbLdrives %&gt;% group_by(SuperBowl) %&gt;% summarise(TotalYards = sum(Net_yds),TotalPlays = sum(Plays)) %&gt;% select(SuperBowl, TotalYards, TotalPlays)
-outlieryards &lt;- yardsvsplays %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;)</code></pre>
+<pre class="r"><code>yardsvsplays &lt;- sbLdrives %&gt;%
+  group_by(SuperBowl) %&gt;%
+  summarise(TotalYards = sum(Net_yds),TotalPlays = sum(Plays)) %&gt;%
+  select(SuperBowl, TotalYards, TotalPlays)
+
+outlieryards &lt;- yardsvsplays %&gt;% 
+  filter(SuperBowl==&quot;Super Bowl 52&quot;)</code></pre>
 <p>I am taking a look at how the Patriots compared on offense to other Super Bowl losers from this century. I paid attention to all the teams’ yards from scrimmage and number of plays to see how much each one moved the ball during their Super Bowl appearance.</p>
 <p>I plotted each point based on total yards and plays. Then, I added the linear regression to visualize the relationship between those two variables and where each team falls on that model.</p>
 <pre class="r"><code>ggplot() + 
@@ -146,7 +151,10 @@ This chart shows that the 2017 Patriots are the furthest team away from the mode
 ##   Loser = col_character(),
 ##   SuperBowl = col_character()
 ## )</code></pre>
-<pre class="r"><code>outlierstats &lt;- sbstats %&gt;% filter(SuperBowl==&quot;Super Bowl 52&quot;) %&gt;% rename(Eagles = Winner, Patriots = Loser) %&gt;% group_by(Eagles, Patriots)</code></pre>
+<pre class="r"><code>outlierstats &lt;- sbstats %&gt;%
+  filter(SuperBowl==&quot;Super Bowl 52&quot;) %&gt;%
+  rename(Eagles = Winner, Patriots = Loser) %&gt;%
+  group_by(Eagles, Patriots)</code></pre>
 <p>I looked at the two teams’ performances in Super Bowl 52 and highlighted the areas that I found worthy of discussion.</p>
 <pre class="r"><code>outlierstats %&gt;% 
   select(&quot;Type&quot;,&quot;Eagles&quot;,&quot;Patriots&quot;) %&gt;%
@@ -325,10 +333,15 @@ Time of Possession
 ##   Opp = col_character()
 ## )
 ## ℹ Use `spec()` for the full column specifications.</code></pre>
-<pre class="r"><code>nedef &lt;- ne2017 %&gt;% pivot_longer(cols=c(&quot;DefRushY&quot;,&quot;DefPassY&quot;), names_to=&quot;Type&quot;, values_to=&quot;Yards&quot;)
-nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
+<pre class="r"><code>nedef &lt;- ne2017 %&gt;%
+  pivot_longer(cols=c(&quot;DefRushY&quot;,&quot;DefPassY&quot;), names_to=&quot;Type&quot;, values_to=&quot;Yards&quot;)
+
+nedefchart &lt;- nedef %&gt;%
+  filter(Week !=&quot;9&quot;)</code></pre>
 <p>I created a new file for the filtered data. Then, I renamed some of the data types to make it easier to read.</p>
-<pre class="r"><code>nedefchartclean &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/nedefchartclean.csv&quot;)</code></pre>
+<pre class="r"><code>nedefchartclean &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/nedefchartclean.csv&quot;) %&gt;%
+    mutate(Type = recode(Type, DefPassY = &quot;Defense Passing&quot;),
+           Type = recode(Type, DefRushY = &quot;Defense Rushing&quot;))</code></pre>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
@@ -354,7 +367,7 @@ nedefchart &lt;- nedef %&gt;% filter(Week !=&quot;9&quot;)</code></pre>
     x=&quot;Game&quot;, 
     y=&quot;Total Yards&quot;, 
     title=&quot;The Patriot&#39;s defense seems to be the problem&quot;, 
-    subtitle=&quot;New England lost their top three games in terms of defensive yards allowed.&quot;, 
+    subtitle=&quot;New England lost their top three games in terms of yards allowed on defense.&quot;, 
     caption=&quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;) +
   theme_minimal() + scale_fill_manual(values=c(&quot;#012169&quot;,&quot;#CC122C&quot;)) + 
   theme(

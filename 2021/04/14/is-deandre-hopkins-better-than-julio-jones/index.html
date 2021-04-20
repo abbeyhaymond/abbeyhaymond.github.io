@@ -88,7 +88,7 @@
 <pre class="r"><code>library(ggrepel)
 library(waffle)</code></pre>
 <p>In May of 2020, Arizona Cardinals receiver, DeAndre Hopkins, joined the Jalen &amp; Jacoby Show. He claimed that he is the best wide receiver in the NFL and compared himself to Julio Jones. Is he really better than “Jet” Jones?</p>
-<p>I took a look at their numbers throughout their careers.</p>
+<p>I took a look at some numbers throughout their careers.</p>
 <pre class="r"><code>NFLreceiving &lt;- read_csv(&quot;~/Desktop/Sports Data/Project/nflreceiving.csv&quot;) %&gt;%
   mutate(CtchPct = as.numeric(gsub(&quot;%&quot;, &quot;&quot;, CtchPct)))</code></pre>
 <pre><code>## 

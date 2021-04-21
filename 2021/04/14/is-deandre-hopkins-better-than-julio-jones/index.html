@@ -219,9 +219,10 @@ nfl &lt;- c(&quot;NFL&quot;= 0, &quot;Touch Down&quot;= 6.23, &quot;1st Down&quo
 <pre class="r"><code>iron(
  waffle(jj, 
         rows = 5, 
-        title=&quot;Count on Jones and Hopkins to get the ball down the field&quot;,
+        title=&quot;&quot;,
         xlab=&quot;1 square = 1 down&quot;, 
-        colors = c(&quot;white&quot;, &quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) +
+        colors = c(&quot;white&quot;, &quot;black&quot;, &quot;#A71930&quot;, &quot;white&quot;)) + 
+   labs(title = &quot;Count on Jones and Hopkins to get the ball down the field&quot;, subtitle = &quot;They are both doing better than the rest of the league regarding touchdowns and first downs.&quot;, fill = &quot;Julio Jones&quot;) +
   theme(
     plot.title = element_text(size = 12, face = &quot;bold&quot;),
     axis.title = element_text(size = 8), 
@@ -247,7 +248,7 @@ nfl &lt;- c(&quot;NFL&quot;= 0, &quot;Touch Down&quot;= 6.23, &quot;1st Down&quo
     axis.title = element_text(size = 8), 
     plot.subtitle = element_text(size=10),
     panel.grid.minor = element_blank()) + 
-  labs(subtitle = &quot;&quot;, caption = &quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;))</code></pre>
+  labs(caption = &quot;Source: pro-football-reference.com | By: Abbey Haymond&quot;))</code></pre>
 <p><img src="/2021/04/14/is-deandre-hopkins-better-than-julio-jones/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 And again, to no one’s surprise, we can see that the two receivers have similar results when they receive the ball. They are both doing better than the rest of the league regarding touchdowns and first downs.</p>
 <p>Julio Jones averages slightly higher with his average number of first downs each season. On the other hand, DeAndre Hopkins average a bit more with his average number of touchdowns.</p>

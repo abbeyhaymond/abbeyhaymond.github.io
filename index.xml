@@ -14,7 +14,7 @@
       
       <guid>/2021/04/14/is-deandre-hopkins-better-than-julio-jones/</guid>
       <description>library(tidyverse) library(ggrepel) library(waffle) In May of 2020, Arizona Cardinals receiver, DeAndre Hopkins, joined the Jalen &amp;amp; Jacoby Show. He claimed that he is the best wide receiver in the NFL and compared himself to Julio Jones. Is he really better than “Jet” Jones?
-I took a look at some numbers throughout their careers.
+I will take a look at some numbers throughout their careers.
 NFLreceiving &amp;lt;- read_csv(&amp;quot;~/Desktop/Sports Data/Project/nflreceiving.csv&amp;quot;) %&amp;gt;% mutate(CtchPct = as.numeric(gsub(&amp;quot;%&amp;quot;, &amp;quot;&amp;quot;, CtchPct))) JJreceiving &amp;lt;- NFLreceiving %&amp;gt;% filter(Player == &amp;quot;Julio Jones&amp;quot;) DHreceiving &amp;lt;- NFLreceiving %&amp;gt;% filter(Player == &amp;quot;DeAndre Hopkins&amp;quot;) To start, I am working with NFL offense data from the top 50 players every season, going back to Julio Jones’ rookie year.</description>
     </item>
     

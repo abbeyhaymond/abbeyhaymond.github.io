@@ -129,7 +129,7 @@ DHrecAvg &lt;- DHreceiving %&gt;% summarise(
 This chart shows that both Jones and Hopkins are close to the top right portion of the model, which tells me that they are higher in comparison to other top players in the league.</p>
 <p>Julio Jones is slightly higher than DeAndre Hopkins, but they are comparable when it comes to how much they caught and moved the ball. We can tell that they are both exceptional wide receivers.</p>
 <p>Another way to identify a good receiver is by their number of targets. The targeted receiver tends to be the best receiver on the field for that play; the better a player does his job, the more likely he is going to be the target.</p>
-<p>I am looking at the same data and selecting seasons that both Jones and Hopkins played a majority of the games. I will focus on the number of targets that they had those seasons to the rest of the league.</p>
+<p>I am looking at the same data and selecting seasons that both Jones and Hopkins played a majority of the games. I will compare the number of targets that they had those seasons to the rest of the league.</p>
 <pre class="r"><code>TgtAvg &lt;- NFLreceiving %&gt;%
   group_by(Season) %&gt;% summarise(
     AvgTgt = mean(Tgt)) %&gt;%

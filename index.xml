@@ -29,16 +29,6 @@ I took a look at their numbers on offense during the Super Bowl.</description>
     </item>
     
     <item>
-      <title>Text Cleaning</title>
-      <link>/2021/03/26/text-cleaning/</link>
-      <pubDate>Fri, 26 Mar 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/2021/03/26/text-cleaning/</guid>
-      <description>I am going to look at the worst games from the 2019 CFB season.
-library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ── ## ✓ ggplot2 3.3.3 ✓ purrr 0.3.4 ## ✓ tibble 3.0.5 ✓ dplyr 1.0.3 ## ✓ tidyr 1.1.2 ✓ stringr 1.4.0 ## ✓ readr 1.4.0 ✓ forcats 0.5.0 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ── ## x dplyr::filter() masks stats::filter() ## x dplyr::lag() masks stats::lag() library(ggalt) ## Registered S3 methods overwritten by &amp;#39;ggalt&amp;#39;: ## method from ## grid.</description>
-    </item>
-    
-    <item>
       <title>About Me</title>
       <link>/about/</link>
       <pubDate>Fri, 12 Mar 2021 00:00:00 +0000</pubDate>
